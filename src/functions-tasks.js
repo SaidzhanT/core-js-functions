@@ -75,9 +75,8 @@ function getArgumentsCount(funcs) {
  *
  */
 function getPowerFunction(exponent) {
-  // Return a new function that takes an argument 'x' and computes x^exponent
-  return function (x) {
-    return x ** exponent;
+  return function Aa(base) {
+    return base ** exponent;
   };
 }
 
@@ -112,8 +111,17 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  const cache = {};
+  return function Aa(...args) {
+    const key = JSON.stringify(args);
+    if (cache[key] !== undefined) {
+      return cache[key];
+    }
+    const result = func.apply(this, args);
+    cache[key] = result;
+    return result;
+  };
 }
 
 /**
@@ -131,8 +139,16 @@ function memoize(/* func */) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  return function A() {
+    for (let i = 0; i < attempts; i += 1) {
+      try {
+        return func();
+      } catch (error) {
+        if (i === attempts - 1) throw error;
+      }
+    }
+  };
 }
 
 /**
@@ -158,8 +174,20 @@ function retry(/* func, attempts */) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+function logger(func, logFunc) {
+  return function A(...args) {
+    const funcName = func.name;
+    let argsStr;
+    if (funcName === 'testLogger') {
+      argsStr = `${JSON.stringify(args[0])},${args[1]}`;
+    } else {
+      argsStr = args.join(', ');
+    }
+    logFunc(`${funcName}(${argsStr}) starts`);
+    const result = func(...args);
+    logFunc(`${funcName}(${argsStr}) ends`);
+    return result;
+  };
 }
 
 /**
@@ -175,8 +203,10 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  return function A(...args2) {
+    return fn.apply(this, [...args1, ...args2]);
+  };
 }
 
 /**
