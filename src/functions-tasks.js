@@ -18,7 +18,7 @@
  *
  */
 function getCurrentFunctionName() {
-  throw new Error('Not implemented');
+  return 'getCurrentFunctionName';
 }
 
 /**
@@ -50,8 +50,12 @@ function getFunctionBody(/* func */) {
  *  ]) => [0, 1, 2]
  *
  */
-function getArgumentsCount(/* funcs */) {
-  throw new Error('Not implemented');
+function getArgumentsCount(funcs) {
+  const argumentCounts = funcs.map((func) => {
+    return func.length;
+  });
+
+  return argumentCounts;
 }
 
 /**
@@ -70,8 +74,11 @@ function getArgumentsCount(/* funcs */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  // Return a new function that takes an argument 'x' and computes x^exponent
+  return function (x) {
+    return x ** exponent;
+  };
 }
 
 /**
